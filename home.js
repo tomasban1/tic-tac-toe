@@ -24,6 +24,7 @@ const winCombo = [
     [6, 4, 2]
 ];
 
+
 let currPlayer = 'X';
 let isGameOver = false;
 let XData = [];
