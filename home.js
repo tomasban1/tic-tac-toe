@@ -1,17 +1,11 @@
 
 
 const btnContainer = document.querySelector('.board');
-let allBoxes = document.querySelectorAll('.box');
-const scoreDOM = document.querySelector('.scoreBoard');
-const button1DOM = document.getElementById('0');
-const button2DOM = document.getElementById('1');
-const button3DOM = document.getElementById('2');
-const button4DOM = document.getElementById('3');
-const button5DOM = document.getElementById('4');
-const button6DOM = document.getElementById('5');
-const button7DOM = document.getElementById('6');
-const button8DOM = document.getElementById('7');
-const button9DOM = document.getElementById('8');
+const allBoxes = document.querySelectorAll('.box');
+const xPlayerDOM = document.querySelector('.xPlayer');
+const oPlayerDOM = document.querySelector('.oPlayer');
+const restartBtn = document.querySelector('button');
+const tieDOM = document.querySelector('.tie');
 
 const winCombo = [
     [0, 1, 2],
@@ -27,29 +21,49 @@ const winCombo = [
 
 let currPlayer = 'X';
 let isGameOver = false;
-let XData = [];
-let OData = [];
+let board = [];
+let xCount = 0;
+let oCount = 0;
 
-for (let i = 0; i < allBoxes.length; i++) {
-    allBoxes[i].addEventListener('click', e => {
-        if (allBoxes[i].textContent !== '') {
-            return;
+
+function gameStart() {
+    for (let i = 0; i < allBoxes.length; i++) {
+        const eventHandler = () => {
+            if (allBoxes[i].textContent !== '') {
+                return;
+            }
+            if (isGameOver !== true) {
+                allBoxes[i].textContent = checkBox();
+                checkWin(currPlayer);
+                checkTie();
+            }
         }
-        allBoxes[i].textContent = checkBox();
-
-
-        checkWin(currPlayer);
-        // checkTie();
-    });
-
+        allBoxes[i].addEventListener('click', eventHandler);
+    }
 }
+
+gameStart();
+
+restartBtn.addEventListener('click', () => {
+    for (let i = 0; i < allBoxes.length; i++) {
+        allBoxes[i].textContent = '';
+        currPlayer = 'X';
+        board = [];
+        isGameOver = false;
+        tieDOM.textContent = '';
+    }
+});
+
+
 
 function checkBox() {
     if (currPlayer === 'X') {
         currPlayer = 'O';
+        board.push('X')
         return 'X';
     } else if (currPlayer === 'O') {
         currPlayer = 'X';
+        board.push('O')
         return 'O'
     }
 }
@@ -58,26 +72,28 @@ function checkWin() {
     for (let i = 0; i < winCombo.length; i++) {
         const [a, b, c] = winCombo[i];
         if (allBoxes[a].textContent === 'X' && allBoxes[b].textContent === 'X' && allBoxes[c].textContent === 'X') {
-            scoreDOM.textContent = 'X player wins!';
+            xCount += 1;
+            xPlayerDOM.textContent = `${xCount}`;
             isGameOver = true;
 
         } else if (allBoxes[a].textContent === 'O' && allBoxes[b].textContent === 'O' && allBoxes[c].textContent === 'O') {
-            scoreDOM.textContent = 'O player wins!';
+            oCount += 1
+            oPlayerDOM.textContent = `${oCount}`;
             isGameOver = true;
         }
-
     }
-    if (isGameOver === true) {
-        for (let j = 0; j < allBoxes.length; j++) {
-            allBoxes[j].replaceWith(allBoxes[j].cloneNode(true));
-        }
-    }
-    return false;
+    return isGameOver;
 }
 
-// function checkTie() {
+function checkTie() {
+    if (board.length === 9) {
+        isGameOver = true;
+        tieDOM.textContent = ' Its a tie!';
+    }
+}
 
 
-// }
+
+
 
 

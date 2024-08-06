@@ -9,8 +9,13 @@
 </head>
 
 <body>
+    <h1>Tic-tac-toe!</h1>
     <section class="main">
-        <h1>Tic-tac-toe!</h1>
+
+        <div>
+            <p class="scoreTitle">X Player win count</p>
+            <div class="xPlayer"></div>
+        </div>
         <div class="board">
             <div id="0" class="box"></div>
             <div id="1" class="box"></div>
@@ -22,13 +27,15 @@
             <div id="7" class="box"></div>
             <div id="8" class="box"></div>
         </div>
-
+        <div>
+            <p class="scoreTitle">O Player win count</p>
+            <div class="oPlayer"></div>
+        </div>
     </section>
-    <article>
+    <div class="restart">
         <button>Restart game</button>
-        <h2>Game history</h2>
-        <div class="scoreBoard"></div>
-    </article>
+    </div>
+    <div class="tie"></div>
 
 
     <script type="module" src="./home.js"></script>
