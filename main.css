@@ -63,6 +63,12 @@ h2{
 
 button{
     padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover{
+    transform: scale(1.1);
 }
 .xPlayer{
     display: flex;
