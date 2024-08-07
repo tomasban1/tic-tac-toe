@@ -16,8 +16,6 @@ export class NewGame {
         this.board = [];
         this.xCount = 0;
         this.oCount = 0;
-        this.localStorageKey = 'itemList';
-        this.gameData = [];
 
         this.gameStart();
         this.restart();
@@ -71,7 +69,6 @@ export class NewGame {
     checkWin() {
         const xPlayerDOM = document.querySelector('.xPlayer');
         const oPlayerDOM = document.querySelector('.oPlayer');
-
 
         for (let i = 0; i < this.winCombos.length; i++) {
             const [a, b, c] = this.winCombos[i];
