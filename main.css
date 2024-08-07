@@ -55,7 +55,6 @@ h1{
 .box:nth-child(3), .box:nth-child(6), .box:nth-child(9){
     border-right: none;
 }
-
 h2{
     display: flex;
     justify-content: center;
