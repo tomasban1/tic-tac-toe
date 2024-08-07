@@ -3,6 +3,9 @@
     margin: 0;
     padding: 0;
 }
+body{
+    background-color: bisque;
+}
 h1{
     text-align: center;
 }
@@ -95,4 +98,8 @@ button{
     text-align: center;
     font-size: 2.5rem;
     font-weight: bold;
+}
+
+.winHighlight{
+    color: red;
 }
