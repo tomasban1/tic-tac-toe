@@ -16,9 +16,25 @@ export class NewGame {
         this.board = [];
         this.xCount = 0;
         this.oCount = 0;
+        this.gameData = [
+            {
+                x: 0,
+                o: 0,
+            },
 
+        ];
         this.gameStart();
         this.restart();
+    }
+
+    localData() {
+        const data = JSON.parse(localStorage.getItem('gameData'));
+        const xPlayerDOM = document.querySelector('.xPlayer');
+        const oPlayerDOM = document.querySelector('.oPlayer');
+        for (const item of data) {
+            xPlayerDOM.textContent = item.x;
+            oPlayerDOM.textContent = item.o;
+        }
     }
 
     gameStart() {
@@ -51,41 +67,43 @@ export class NewGame {
                     this.boxes[i].classList.remove('winHighlight');
                 }
             }
+            this.gameData = [
+                {
+                    x: this.xCount,
+                    o: this.oCount,
+                },
+            ];
+            localStorage.setItem('gameData', JSON.stringify(this.gameData));
+            this.localData();
         });
     }
 
     checkBox() {
         if (this.currPlayer === 'X') {
             this.currPlayer = 'O';
-            this.board.push('X')
+            this.board.push('X');
             return 'X';
         } else if (this.currPlayer === 'O') {
             this.currPlayer = 'X';
-            this.board.push('O')
+            this.board.push('O');
             return 'O'
         }
     }
 
     checkWin() {
-        const xPlayerDOM = document.querySelector('.xPlayer');
-        const oPlayerDOM = document.querySelector('.oPlayer');
-
         for (let i = 0; i < this.winCombos.length; i++) {
             const [a, b, c] = this.winCombos[i];
             if (this.boxes[a].textContent === 'X' && this.boxes[b].textContent === 'X' && this.boxes[c].textContent === 'X') {
-                this.xCount += 1;
-                xPlayerDOM.textContent = `${this.xCount}`;
+                this.xCount++;
                 this.isGameOver = true;
-                this.boxes[a].classList.add('winHighlight')
-                this.boxes[b].classList.add('winHighlight')
+                this.boxes[a].classList.add('winHighlight');
+                this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
-
             } else if (this.boxes[a].textContent === 'O' && this.boxes[b].textContent === 'O' && this.boxes[c].textContent === 'O') {
-                this.oCount += 1
-                oPlayerDOM.textContent = `${this.oCount}`;
+                this.oCount++;
                 this.isGameOver = true;
-                this.boxes[a].classList.add('winHighlight')
-                this.boxes[b].classList.add('winHighlight')
+                this.boxes[a].classList.add('winHighlight');
+                this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
             }
         }
