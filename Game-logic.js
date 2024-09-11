@@ -16,25 +16,31 @@ export class NewGame {
         this.board = [];
         this.xCount = 0;
         this.oCount = 0;
-        this.gameData = [
-            {
-                x: 0,
-                o: 0,
-            },
-
-        ];
+        this.gameData = [];
         this.gameStart();
         this.restart();
+
+
+
     }
 
     localData() {
-        const data = JSON.parse(localStorage.getItem('gameData'));
+        let data = JSON.parse(localStorage.getItem('gameData'));
         const xPlayerDOM = document.querySelector('.xPlayer');
         const oPlayerDOM = document.querySelector('.oPlayer');
-        for (const item of data) {
-            xPlayerDOM.textContent = item.x;
-            oPlayerDOM.textContent = item.o;
+        if (data === null) {
+            xPlayerDOM.textContent = 0
+            oPlayerDOM.textContent = 0
+        } else {
+            for (const item of data) {
+
+                xPlayerDOM.textContent = item.x;
+                oPlayerDOM.textContent = item.o;
+                console.log(item.x);
+
+            }
         }
+
     }
 
     gameStart() {
@@ -47,9 +53,11 @@ export class NewGame {
                     this.boxes[i].textContent = this.checkBox();
                     this.checkWin();
                     this.checkTie();
+                    localStorage.setItem('gameData', JSON.stringify(this.gameData));
                 }
             }
             this.boxes[i].addEventListener('click', eventHandler);
+
         }
     }
 
@@ -67,13 +75,10 @@ export class NewGame {
                     this.boxes[i].classList.remove('winHighlight');
                 }
             }
-            this.gameData = [
-                {
-                    x: this.xCount,
-                    o: this.oCount,
-                },
-            ];
-            localStorage.setItem('gameData', JSON.stringify(this.gameData));
+
+
+
+
             this.localData();
         });
     }
@@ -88,25 +93,45 @@ export class NewGame {
             this.board.push('O');
             return 'O'
         }
+        localStorage.setItem('gameData', JSON.stringify(this.gameData));
     }
 
     checkWin() {
         for (let i = 0; i < this.winCombos.length; i++) {
             const [a, b, c] = this.winCombos[i];
+
             if (this.boxes[a].textContent === 'X' && this.boxes[b].textContent === 'X' && this.boxes[c].textContent === 'X') {
                 this.xCount++;
                 this.isGameOver = true;
                 this.boxes[a].classList.add('winHighlight');
                 this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
+                this.gameData = [
+                    {
+                        x: this.xCount,
+                        o: this.oCount,
+                    },
+                ];
+                localStorage.setItem('gameData', JSON.stringify(this.gameData));
             } else if (this.boxes[a].textContent === 'O' && this.boxes[b].textContent === 'O' && this.boxes[c].textContent === 'O') {
                 this.oCount++;
                 this.isGameOver = true;
                 this.boxes[a].classList.add('winHighlight');
                 this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
+                this.gameData = [
+                    {
+                        x: this.xCount,
+                        o: this.oCount,
+                    },
+                ];
+                localStorage.setItem('gameData', JSON.stringify(this.gameData));
             }
+
+
+
         }
+
         return this.isGameOver;
     }
 
