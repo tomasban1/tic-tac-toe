@@ -14,33 +14,31 @@ export class NewGame {
         this.isGameOver = false;
         this.currPlayer = 'X';
         this.board = [];
-        this.xCount = 0;
-        this.oCount = 0;
-        this.gameData = [];
+        this.gameData = [0, 0];
+        this.data = [];
+        this.xPlayerDOM = document.querySelector('.xPlayer');
+        this.oPlayerDOM = document.querySelector('.oPlayer');
         this.gameStart();
+        this.showScore()
         this.restart();
+
+
+
 
 
 
     }
 
-    localData() {
-        let data = JSON.parse(localStorage.getItem('gameData'));
-        const xPlayerDOM = document.querySelector('.xPlayer');
-        const oPlayerDOM = document.querySelector('.oPlayer');
-        if (data === null) {
-            xPlayerDOM.textContent = 0
-            oPlayerDOM.textContent = 0
+    showScore() {
+        this.data = JSON.parse(localStorage.getItem('gameData', this.gameData))
+        if (this.data !== null) {
+            this.gameData = this.data
+            this.xPlayerDOM.textContent = this.data[0];
+            this.oPlayerDOM.textContent = this.data[1];
         } else {
-            for (const item of data) {
-
-                xPlayerDOM.textContent = item.x;
-                oPlayerDOM.textContent = item.o;
-                console.log(item.x);
-
-            }
+            this.xPlayerDOM.textContent = 0;
+            this.oPlayerDOM.textContent = 0;
         }
-
     }
 
     gameStart() {
@@ -53,11 +51,9 @@ export class NewGame {
                     this.boxes[i].textContent = this.checkBox();
                     this.checkWin();
                     this.checkTie();
-                    localStorage.setItem('gameData', JSON.stringify(this.gameData));
                 }
             }
             this.boxes[i].addEventListener('click', eventHandler);
-
         }
     }
 
@@ -75,11 +71,7 @@ export class NewGame {
                     this.boxes[i].classList.remove('winHighlight');
                 }
             }
-
-
-
-
-            this.localData();
+            this.showScore()
         });
     }
 
@@ -93,45 +85,29 @@ export class NewGame {
             this.board.push('O');
             return 'O'
         }
-        localStorage.setItem('gameData', JSON.stringify(this.gameData));
     }
 
     checkWin() {
         for (let i = 0; i < this.winCombos.length; i++) {
             const [a, b, c] = this.winCombos[i];
-
             if (this.boxes[a].textContent === 'X' && this.boxes[b].textContent === 'X' && this.boxes[c].textContent === 'X') {
-                this.xCount++;
+                this.gameData[0]++
                 this.isGameOver = true;
                 this.boxes[a].classList.add('winHighlight');
                 this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
-                this.gameData = [
-                    {
-                        x: this.xCount,
-                        o: this.oCount,
-                    },
-                ];
                 localStorage.setItem('gameData', JSON.stringify(this.gameData));
+                this.showScore()
             } else if (this.boxes[a].textContent === 'O' && this.boxes[b].textContent === 'O' && this.boxes[c].textContent === 'O') {
-                this.oCount++;
+                this.gameData[1]++;
                 this.isGameOver = true;
                 this.boxes[a].classList.add('winHighlight');
                 this.boxes[b].classList.add('winHighlight');
                 this.boxes[c].classList.add('winHighlight');
-                this.gameData = [
-                    {
-                        x: this.xCount,
-                        o: this.oCount,
-                    },
-                ];
                 localStorage.setItem('gameData', JSON.stringify(this.gameData));
+                this.showScore()
             }
-
-
-
         }
-
         return this.isGameOver;
     }
 
